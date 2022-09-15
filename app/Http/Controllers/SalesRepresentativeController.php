@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SalesRepresentativeRequest;
 use App\Models\SalesRepresentative;
+use App\Models\WorkingRoute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SalesRepresentativeController extends Controller
 {
@@ -14,9 +17,8 @@ class SalesRepresentativeController extends Controller
      */
     public function index()
     {
-        $salesRepresentative = SalesRepresentative::orderBy('updated_at', 'desc')->paginate(20);
-        dd($salesRepresentative);
-        return view('salesRepresentative.index', ['salesRepresentative' =>  $salesRepresentative]);
+        $salesRepresentatives = SalesRepresentative::orderBy('updated_at', 'desc')->paginate(20);
+        return view('salesRepresentative.index', ['salesRepresentatives' =>  $salesRepresentatives]);
     }
 
     /**
@@ -26,7 +28,8 @@ class SalesRepresentativeController extends Controller
      */
     public function create()
     {
-        //
+        $workRoutes = WorkingRoute::all();
+        return view('salesRepresentative.create', ['workRoutes' => $workRoutes]);
     }
 
     /**
@@ -35,9 +38,21 @@ class SalesRepresentativeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SalesRepresentativeRequest $request)
     {
-        //
+        $salesRepresentative = SalesRepresentative::create([
+            'name' => $request->name,
+            'contact_number' => $request->contact_number,
+            'email' => $request->email,
+            'joined_date' => $request->joined_date,
+            'manager_id' => Auth::id(),
+        ]);
+
+        $workingRoute = WorkingRoute::find($request->route_id);
+
+        $salesRepresentative->workingRoutes()->save($workingRoute);
+
+        return redirect(route('sales-representative.index'));
     }
 
     /**

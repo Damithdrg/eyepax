@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\WorkingRoute;
 use Database\Factories\SalesRepresentativeFactory;
 use Database\Factories\WorkingRouteFactory;
 use Illuminate\Database\Seeder;
@@ -18,8 +19,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-        WorkingRouteFactory::factory(10)->create();
-        SalesRepresentativeFactory::factory(10)->create();
+        WorkingRoute::factory(10)->create();
+        // SalesRepresentativeFactory::factory(10)->create();
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

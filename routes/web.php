@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\SalesRepresentative;
+use App\Http\Controllers\SalesRepresentativeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth']], function () {
         return view('dashboard');
     })->middleware(['auth'])->name('dashboard');
 
-    Route::resource('/sales-representative', SalesRepresentative::class);
+    Route::resource('/sales-representative', SalesRepresentativeController::class);
 
 });
 
